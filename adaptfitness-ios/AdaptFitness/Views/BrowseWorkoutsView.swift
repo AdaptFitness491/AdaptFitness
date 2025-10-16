@@ -67,8 +67,6 @@ struct BrowseWorkoutsView: View {
             
             Spacer()
             
-            // Footer buttons
-            FooterTabBar()
         }
     }
 }

@@ -27,12 +27,13 @@ struct AdaptFitnessApp: App {
 
     var body: some Scene {
         WindowGroup {
-            if isLoggedIn {
-                HomePageView(isLoggedIn: $isLoggedIn, user: .exampleUser)
-            } else {
-                LoginView(isLoggedIn: $isLoggedIn)
-            }
+//            if isLoggedIn {
+//                HomePageView(isLoggedIn: $isLoggedIn, user: .exampleUser)
+//            } else {
+//                LoginView(isLoggedIn: $isLoggedIn)
+//            }
 //            HomePageView(isLoggedIn: $isLoggedIn, user: .exampleUser)
+            ContentView()
         }
         .modelContainer(sharedModelContainer)
     }

@@ -26,16 +26,16 @@ extension Meal {
         Meal(
             id: UUID().uuidString,
             userId: "user123",
-            date: Date(),
+            date: Date().addingTimeInterval(-86400),
             type: "breakfast",
-            foods: [FoodEntry.exampleFoodEntries[0], FoodEntry.exampleFoodEntries[2]]
+            foods: [FoodEntry.exampleFoodEntries[1], FoodEntry.exampleFoodEntries[3], FoodEntry.exampleFoodEntries[4]]
         ),
         Meal(
             id: UUID().uuidString,
             userId: "user123",
-            date: Date().addingTimeInterval(-86400),
+            date: Date(),
             type: "breakfast",
-            foods: [FoodEntry.exampleFoodEntries[1], FoodEntry.exampleFoodEntries[3], FoodEntry.exampleFoodEntries[4]]
+            foods: [FoodEntry.exampleFoodEntries[0], FoodEntry.exampleFoodEntries[2]]
         )
     ]
 }

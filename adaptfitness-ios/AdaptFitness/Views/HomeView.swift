@@ -180,12 +180,11 @@ struct HomePageView: View {
                         .sheet(isPresented: $showCamera) {
                             CameraPicker(selectedImage: $capturedImage)
                         }
+                        .padding()
                     }
+                    
                 }
             }
-            
-            // Footer Tabs
-            FooterTabBar()
         }
     }
 }
