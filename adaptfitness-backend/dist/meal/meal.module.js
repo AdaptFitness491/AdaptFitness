@@ -26,6 +26,7 @@ exports.MealModule = MealModule = __decorate([
         ],
         providers: [meal_service_1.MealService],
         controllers: [meal_controller_1.MealController],
+        exports: [meal_service_1.MealService],
     })
 ], MealModule);
 //# sourceMappingURL=meal.module.js.map

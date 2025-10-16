@@ -204,11 +204,14 @@ describe('MealService', () => {
         });
         it('should limit daysAgo to prevent infinite loops', async () => {
             const userId = 'user-uuid-123';
-            const meals = [
-                { mealTime: new Date() },
-            ];
+            const meals = [];
+            for (let i = 0; i < 10; i++) {
+                meals.push({ mealTime: new Date(Date.now() - i * 24 * 60 * 60 * 1000) });
+            }
             mockRepository.find.mockResolvedValue(meals);
             const result = await service.getCurrentStreakInTimeZone(userId, 'UTC');
+            expect(result.streak).toBe(10);
+            expect(Number.isFinite(result.streak)).toBe(true);
             expect(result.streak).toBeLessThanOrEqual(365);
         });
         it('should handle edge case of meals at midnight boundary', async () => {

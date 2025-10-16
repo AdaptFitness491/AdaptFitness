@@ -10,7 +10,7 @@ import SwiftData
 
 @main
 struct AdaptFitnessApp: App {
-    @State private var isLoggedIn: Bool = true
+    @StateObject private var authManager = AuthManager()
     
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
@@ -27,12 +27,13 @@ struct AdaptFitnessApp: App {
 
     var body: some Scene {
         WindowGroup {
-            if isLoggedIn {
-                HomePageView(isLoggedIn: $isLoggedIn, user: .exampleUser)
+            if authManager.isAuthenticated {
+                MainTabView()
+                    .environmentObject(authManager)
             } else {
-                LoginView(isLoggedIn: $isLoggedIn)
+                LoginView()
+                    .environmentObject(authManager)
             }
-//            HomePageView(isLoggedIn: $isLoggedIn, user: .exampleUser)
         }
         .modelContainer(sharedModelContainer)
     }

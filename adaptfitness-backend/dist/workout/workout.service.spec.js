@@ -204,11 +204,14 @@ describe('WorkoutService', () => {
         });
         it('should limit daysAgo to prevent infinite loops', async () => {
             const userId = 'user-uuid-123';
-            const workouts = [
-                { startTime: new Date() },
-            ];
+            const workouts = [];
+            for (let i = 0; i < 10; i++) {
+                workouts.push({ startTime: new Date(Date.now() - i * 24 * 60 * 60 * 1000) });
+            }
             mockRepository.find.mockResolvedValue(workouts);
             const result = await service.getCurrentStreakInTimeZone(userId, 'UTC');
+            expect(result.streak).toBe(10);
+            expect(Number.isFinite(result.streak)).toBe(true);
             expect(result.streak).toBeLessThanOrEqual(365);
         });
         it('should handle edge case of workouts at midnight boundary', async () => {
