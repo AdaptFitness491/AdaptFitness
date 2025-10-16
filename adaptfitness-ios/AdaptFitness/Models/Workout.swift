@@ -14,10 +14,10 @@ import SwiftUI
 
 struct Workout: Identifiable {
     let id = UUID()
-    let name: String
-    let intensity: String
-    let calories: String
-    let systemImage: String
+    var name: String
+    var intensity: String
+    var calories: String
+    var systemImage: String
 }
 
 extension Workout {

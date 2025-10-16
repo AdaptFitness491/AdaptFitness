@@ -16,7 +16,6 @@ import SwiftUI
 //}
 
 struct BrowseWorkoutsView: View {
-    
     let workouts: [Workout] = [
         Workout(name: "Add Custom Workout", intensity: "", calories: "", systemImage: "plus.circle"),
         Workout(name: "Running", intensity: "High", calories: "352 per 30 min", systemImage: "figure.run"),
@@ -28,52 +27,46 @@ struct BrowseWorkoutsView: View {
         Workout(name: "Boxing", intensity: "High", calories: "400 per 30 min", systemImage: "figure.boxing")
     ]
     
+    @State private var showAddWorkoutSheet = false
+    @State private var selectedWorkout: Workout? = nil
+    
     var body: some View {
         VStack {
-            // Header
             Text("Browse Workouts")
                 .font(.largeTitle)
                 .bold()
                 .padding(.top, 20)
-           
-            // Exit & Favorites Buttons
-            HStack {
-                Button(action: {
-                    print("Exit tapped")
-                }) {
-                    Image(systemName: "xmark.circle")
-                        .font(.title)
-                }
-                
-                Spacer()
-                
-                Button(action: {
-                    print("Favorite tapped")
-                }) {
-                    Image(systemName: "star.fill")
-                        .font(.title)
-                }
-            }
-            .padding()
             
             ScrollView {
                 LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 20) {
                     ForEach(workouts) { workout in
                         WorkoutTile(workout: workout)
+                            .onTapGesture {
+                                // If custom workout, send blank Workout
+                                if workout.name == "Add Custom Workout" {
+                                    selectedWorkout = Workout(name: "", intensity: "", calories: "", systemImage: "plus.circle")
+                                } else {
+                                    selectedWorkout = workout
+                                }
+                                showAddWorkoutSheet = true
+                            }
                     }
                 }
                 .padding()
             }
-            
-            Spacer()
-            
+        }
+        .sheet(isPresented: $showAddWorkoutSheet) {
+            if let workout = selectedWorkout {
+                AddWorkoutFormView(workout: workout)
+            }
         }
     }
 }
 
+
 struct WorkoutTile: View {
     let workout: Workout
-    
+
     var body: some View {
         VStack(spacing: 10) {
             Image(systemName: workout.systemImage)
@@ -81,10 +74,10 @@ struct WorkoutTile: View {
                 .scaledToFit()
                 .frame(height: 60)
                 .padding()
-            
+
             Text(workout.name)
                 .font(.headline)
-            
+
             if !workout.intensity.isEmpty {
                 Text("Intensity: \(workout.intensity)")
                     .font(.subheadline)
@@ -98,8 +91,4 @@ struct WorkoutTile: View {
         .background(Color.gray.opacity(0.1))
         .cornerRadius(12)
     }
-}
-
-#Preview {
-    BrowseWorkoutsView()
 }
