@@ -4,18 +4,15 @@
 //
 //  Created by csuftitan on 9/17/25.
 //
+//
+//  BrowseWorkoutsView.swift
+//  AdaptFitness
+//
 
 import SwiftUI
 
-//struct Workout: Identifiable {
-//    let id = UUID()
-//    let name: String
-//    let intensity: String
-//    let calories: String
-//    let systemImage: String
-//}
-
 struct BrowseWorkoutsView: View {
+    // Predefined workouts
     let workouts: [Workout] = [
         Workout(name: "Add Custom Workout", intensity: "", calories: "", systemImage: "plus.circle"),
         Workout(name: "Running", intensity: "High", calories: "352 per 30 min", systemImage: "figure.run"),
@@ -27,8 +24,9 @@ struct BrowseWorkoutsView: View {
         Workout(name: "Boxing", intensity: "High", calories: "400 per 30 min", systemImage: "figure.boxing")
     ]
     
+    // MARK: - State
+    @State private var selectedWorkout: FitnessRecord? = nil
     @State private var showAddWorkoutSheet = false
-    @State private var selectedWorkout: Workout? = nil
     
     var body: some View {
         VStack {
@@ -39,56 +37,87 @@ struct BrowseWorkoutsView: View {
             
             ScrollView {
                 LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 20) {
-                    ForEach(workouts) { workout in
-                        WorkoutTile(workout: workout)
-                            .onTapGesture {
-                                // If custom workout, send blank Workout
-                                if workout.name == "Add Custom Workout" {
-                                    selectedWorkout = Workout(name: "", intensity: "", calories: "", systemImage: "plus.circle")
-                                } else {
-                                    selectedWorkout = workout
-                                }
-                                showAddWorkoutSheet = true
-                            }
+                    ForEach(workouts, id: \.name) { workout in
+                        Button {
+                            selectWorkout(workout)
+                        } label: {
+                            WorkoutTile(workout: workout)
+                        }
+                        .buttonStyle(PlainButtonStyle())
                     }
                 }
                 .padding()
             }
         }
         .sheet(isPresented: $showAddWorkoutSheet) {
-            if let workout = selectedWorkout {
-                AddWorkoutFormView(workout: workout)
+            // Ensure we have a selectedWorkout before showing the form
+            if let _ = selectedWorkout {
+                AddWorkoutFormView(
+                    record: Binding(
+                        get: { selectedWorkout! },
+                        set: { selectedWorkout = $0 }
+                    )
+                )
             }
         }
     }
+    
+    // MARK: - Helper
+    private func selectWorkout(_ workout: Workout) {
+        if workout.name == "Add Custom Workout" {
+            // Blank workout
+            selectedWorkout = FitnessRecord(
+                name: "",
+                intensity: "",
+                calories: 0,
+                duration: 0,
+                systemImage: "plus.circle",
+                date: Date()
+            )
+        } else {
+            // Pre-fill from existing workout
+            let caloriesValue = Double(workout.calories.split(separator: " ").first ?? "0") ?? 0
+            selectedWorkout = FitnessRecord(
+                name: workout.name,
+                intensity: workout.intensity,
+                calories: caloriesValue,
+                duration: 30 * 60, // default 30 min
+                systemImage: workout.systemImage,
+                date: Date()
+            )
+        }
+        showAddWorkoutSheet = true
+    }
 }
 
-
+// MARK: - Workout Tile
 struct WorkoutTile: View {
     let workout: Workout
-
+    
     var body: some View {
         VStack(spacing: 10) {
             Image(systemName: workout.systemImage)
                 .resizable()
                 .scaledToFit()
                 .frame(height: 60)
-                .padding()
-
+            
             Text(workout.name)
                 .font(.headline)
-
+                .foregroundColor(.primary) // ensures default text color
+            
             if !workout.intensity.isEmpty {
                 Text("Intensity: \(workout.intensity)")
                     .font(.subheadline)
+                    .foregroundColor(.secondary)
             }
             if !workout.calories.isEmpty {
                 Text("Est Cal: \(workout.calories)")
                     .font(.subheadline)
+                    .foregroundColor(.secondary)
             }
         }
         .frame(maxWidth: .infinity, minHeight: 150)
-        .background(Color.gray.opacity(0.1))
+//        .background(Color.gray.opacity(0.1))
         .cornerRadius(12)
     }
 }

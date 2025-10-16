@@ -20,7 +20,7 @@ struct HomePageView: View {
     
     let user: User
     @State private var goals: [Goal] = Goal.exampleGoals
-    @State private var fitnessRecords: [FitnessRecord] = FitnessRecord.exampleRecords
+//    @State private var fitnessRecords: [FitnessRecord] = FitnessRecord.exampleRecords
     @State private var foods: [FoodEntry] = FoodEntry.exampleFoodEntries
     
 //  ============================================================
