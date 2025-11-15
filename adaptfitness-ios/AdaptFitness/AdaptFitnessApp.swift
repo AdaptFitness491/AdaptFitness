@@ -15,16 +15,11 @@ struct AdaptFitnessApp: App {
     var body: some Scene {
         WindowGroup {
             if isLoggedIn {
-                   ContentView()
-                       .environment(\.managedObjectContext, coreDataManager.viewContext)
-                       .environmentObject(coreDataManager)
-               } else {
-                   LoginView(isLoggedIn: $isLoggedIn)
+                ContentView()
+                    .environment(\.managedObjectContext, coreDataManager.viewContext)
+            } else {
+                LoginView(isLoggedIn: $isLoggedIn)
             }
-//            HomePageView(isLoggedIn: $isLoggedIn, user: .exampleUser)
-//            ContentView()
-                .environment(\.managedObjectContext, coreDataManager.viewContext)
-                .environmentObject(coreDataManager)
         }
     }
 }
