@@ -48,7 +48,7 @@ struct BrowseWorkoutsView: View {
         .sheet(isPresented: $showAddWorkoutSheet) {
             // Ensure we have a selectedWorkout before showing the form
             if let _ = selectedWorkout {
-                AddWorkoutFormView(
+                AddFitnessRecordFormView(
                     record: Binding(
                         get: { selectedWorkout! },
                         set: { selectedWorkout = $0 }

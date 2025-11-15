@@ -6,36 +6,25 @@
 //
 
 import SwiftUI
-import SwiftData
 
 @main
 struct AdaptFitnessApp: App {
     @State private var isLoggedIn: Bool = false
-    
-    var sharedModelContainer: ModelContainer = {
-        let schema = Schema([
-            Item.self,
-        ])
-        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
-
-        do {
-            return try ModelContainer(for: schema, configurations: [modelConfiguration])
-        } catch {
-            fatalError("Could not create ModelContainer: \(error)")
-        }
-    }()
+    let coreDataManager = CoreDataManager.shared
 
     var body: some Scene {
         WindowGroup {
             if isLoggedIn {
-//                HomePageView(isLoggedIn: $isLoggedIn, user: .exampleUser)
-                ContentView()
-            } else {
-                LoginView(isLoggedIn: $isLoggedIn)
+                   ContentView()
+                       .environment(\.managedObjectContext, coreDataManager.viewContext)
+                       .environmentObject(coreDataManager)
+               } else {
+                   LoginView(isLoggedIn: $isLoggedIn)
             }
 //            HomePageView(isLoggedIn: $isLoggedIn, user: .exampleUser)
 //            ContentView()
+                .environment(\.managedObjectContext, coreDataManager.viewContext)
+                .environmentObject(coreDataManager)
         }
-        .modelContainer(sharedModelContainer)
     }
 }

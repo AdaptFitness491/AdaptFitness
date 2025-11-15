@@ -7,8 +7,10 @@
 
 import SwiftUI
 
-struct AddWorkoutFormView: View {
+struct AddFitnessRecordFormView: View {
     @Binding var record: FitnessRecordTemplate
+    @StateObject private var viewModel = AddFitnessRecordViewModel()
+    @Environment(\.presentationMode) private var presentationMode
     @State private var useStopwatch: Bool = false
     @State private var timerRunning: Bool = false
     @State private var elapsedTime: TimeInterval = 0
@@ -119,6 +121,14 @@ struct AddWorkoutFormView: View {
             
             Button(action: {
                 // TODO: implement save action
+                let result = viewModel.save(record: record)
+                    switch result {
+                    case .success:
+                        presentationMode.wrappedValue.dismiss()
+                    case .failure(let error):
+                        // show error UI - for now print
+                        print("Save failed: \(error)")
+                    }
             }) {
                 Text("Save")
                     .bold()
