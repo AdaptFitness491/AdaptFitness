@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct AddWorkoutFormView: View {
-    @Binding var record: FitnessRecord
+    @Binding var record: FitnessRecordTemplate
     @State private var useStopwatch: Bool = false
     @State private var timerRunning: Bool = false
     @State private var elapsedTime: TimeInterval = 0

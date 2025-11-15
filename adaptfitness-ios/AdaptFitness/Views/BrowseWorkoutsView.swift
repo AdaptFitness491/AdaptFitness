@@ -3,29 +3,25 @@
 //  AdaptFitness
 //
 //  Created by csuftitan on 9/17/25.
-//
-//
-//  BrowseWorkoutsView.swift
-//  AdaptFitness
-//
+
 
 import SwiftUI
 
 struct BrowseWorkoutsView: View {
     // Predefined workouts
-    let workouts: [Workout] = [
-        Workout(name: "Add Custom Workout", intensity: "", calories: "", systemImage: "plus.circle"),
-        Workout(name: "Running", intensity: "High", calories: "352 per 30 min", systemImage: "figure.run"),
-        Workout(name: "Walking", intensity: "Low", calories: "150 per 30 min", systemImage: "figure.walk"),
-        Workout(name: "Swimming", intensity: "High", calories: "215 per 30 min", systemImage: "drop.fill"),
-        Workout(name: "Cycling", intensity: "Low-High", calories: "225 per 30 min", systemImage: "bicycle"),
-        Workout(name: "Hiking", intensity: "Low-Moderate", calories: "180 per 30 min", systemImage: "figure.hiking"),
-        Workout(name: "Yoga", intensity: "Low-High", calories: "173 per 30 min", systemImage: "figure.cooldown"),
-        Workout(name: "Boxing", intensity: "High", calories: "400 per 30 min", systemImage: "figure.boxing")
+    let workouts: [WorkoutTemplate] = [
+        WorkoutTemplate(name: "Add Custom Workout", intensity: "", calories: "", systemImage: "plus.circle"),
+        WorkoutTemplate(name: "Running", intensity: "High", calories: "352 per 30 min", systemImage: "figure.run"),
+        WorkoutTemplate(name: "Walking", intensity: "Low", calories: "150 per 30 min", systemImage: "figure.walk"),
+        WorkoutTemplate(name: "Swimming", intensity: "High", calories: "215 per 30 min", systemImage: "drop.fill"),
+        WorkoutTemplate(name: "Cycling", intensity: "Low-High", calories: "225 per 30 min", systemImage: "bicycle"),
+        WorkoutTemplate(name: "Hiking", intensity: "Low-Moderate", calories: "180 per 30 min", systemImage: "figure.hiking"),
+        WorkoutTemplate(name: "Yoga", intensity: "Low-High", calories: "173 per 30 min", systemImage: "figure.cooldown"),
+        WorkoutTemplate(name: "Boxing", intensity: "High", calories: "400 per 30 min", systemImage: "figure.boxing")
     ]
     
     // MARK: - State
-    @State private var selectedWorkout: FitnessRecord? = nil
+    @State private var selectedWorkout: FitnessRecordTemplate? = nil
     @State private var showAddWorkoutSheet = false
     
     var body: some View {
@@ -63,10 +59,10 @@ struct BrowseWorkoutsView: View {
     }
     
     // MARK: - Helper
-    private func selectWorkout(_ workout: Workout) {
+    private func selectWorkout(_ workout: WorkoutTemplate) {
         if workout.name == "Add Custom Workout" {
             // Blank workout
-            selectedWorkout = FitnessRecord(
+            selectedWorkout = FitnessRecordTemplate(
                 name: "",
                 intensity: "",
                 calories: 0,
@@ -77,7 +73,7 @@ struct BrowseWorkoutsView: View {
         } else {
             // Pre-fill from existing workout
             let caloriesValue = Double(workout.calories.split(separator: " ").first ?? "0") ?? 0
-            selectedWorkout = FitnessRecord(
+            selectedWorkout = FitnessRecordTemplate(
                 name: workout.name,
                 intensity: workout.intensity,
                 calories: caloriesValue,
@@ -92,7 +88,7 @@ struct BrowseWorkoutsView: View {
 
 // MARK: - Workout Tile
 struct WorkoutTile: View {
-    let workout: Workout
+    let workout: WorkoutTemplate
     
     var body: some View {
         VStack(spacing: 10) {

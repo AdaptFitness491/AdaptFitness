@@ -6,7 +6,7 @@
 //
 import SwiftUI
 
-struct User: Codable, Identifiable {
+struct UserTemplate: Codable, Identifiable {
     var id: String
     var email: String
     var token: String?
@@ -14,8 +14,8 @@ struct User: Codable, Identifiable {
     var loginStreak: Int?
 }
 
-extension User {
-    static let exampleUser = User(
+extension UserTemplate {
+    static let exampleUser = UserTemplate(
         id: UUID().uuidString,
         email: "user@example.com",
         token: "abc123",

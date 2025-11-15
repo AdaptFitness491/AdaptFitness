@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct FitnessRecord: Codable, Identifiable {
+struct FitnessRecordTemplate: Codable, Identifiable {
     let id = UUID()
     var name: String
     var intensity: String

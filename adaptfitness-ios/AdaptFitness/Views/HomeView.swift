@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import UIKit
 
 struct HomePageView: View {
     @Binding var isLoggedIn: Bool
@@ -18,7 +19,7 @@ struct HomePageView: View {
     
 //    hardcoded data used to mimic returned request ============
     
-    let user: User
+    let user: UserTemplate
     @State private var goals: [Goal] = Goal.exampleGoals
 //    @State private var fitnessRecords: [FitnessRecord] = FitnessRecord.exampleRecords
     @State private var foods: [FoodEntry] = FoodEntry.exampleFoodEntries

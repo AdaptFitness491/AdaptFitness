@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct AddGoalForm: View {
-    @Binding var goals: [Goal] // ✅ Updated to use [Goal]
+    @Binding var goals: [Goal] 
     @State private var goalType = ""
     @State private var goalAmount = ""
     @State private var goalUnits = ""
