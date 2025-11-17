@@ -23,9 +23,16 @@ final class CoreDataManager {
             if let error = error {
                 fatalError("Failed to load Core Data stack: \(error)")
             }
+            
+            if let url = desc.url {
+                    print("📌 Core Data Store Location:")
+                    print(url.path)
+            }
         }
+        
         container.viewContext.automaticallyMergesChangesFromParent = true
         container.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+        
     }
 
     // use this when creating an in-memory instance for tests

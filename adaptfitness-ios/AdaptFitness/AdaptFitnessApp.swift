@@ -11,9 +11,10 @@ import SwiftUI
 struct AdaptFitnessApp: App {
     @State private var isLoggedIn: Bool = false
     let coreDataManager = CoreDataManager.shared
-
+    
     var body: some Scene {
         WindowGroup {
+            
             if isLoggedIn {
                 ContentView()
                     .environment(\.managedObjectContext, coreDataManager.viewContext)

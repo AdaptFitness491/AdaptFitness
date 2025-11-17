@@ -7,6 +7,7 @@
 
 import SwiftUI
 import UIKit
+import CoreData
 
 struct HomePageView: View {
     @Binding var isLoggedIn: Bool
@@ -16,6 +17,7 @@ struct HomePageView: View {
     @State private var showingAddWorkoutForm = false
     @State private var showCamera = false
     @State private var capturedImage: UIImage?
+    @StateObject private var viewModel: HomePageViewModel
     
 //    hardcoded data used to mimic returned request ============
     
@@ -25,6 +27,13 @@ struct HomePageView: View {
     @State private var foods: [FoodEntry] = FoodEntry.exampleFoodEntries
     
 //  ============================================================
+    
+    init(isLoggedIn: Binding<Bool>, user: UserTemplate, context: NSManagedObjectContext = CoreDataManager.shared.viewContext) {
+        self._isLoggedIn = isLoggedIn
+        self.user = user
+        _viewModel = StateObject(wrappedValue: HomePageViewModel(context: context))
+    }
+
     
     var body: some View {
         VStack {
@@ -132,11 +141,33 @@ struct HomePageView: View {
                 }
             }
             
-    
             
-            // Entries
-            // TODO: Test entries
             ScrollView {
+                // MARK: Recent workouts
+                Text("Recent Workouts")
+                    .font(.title)
+                    .padding(.top, 10)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.horizontal)
+
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 15) {
+                        ForEach(viewModel.recentRecords, id: \.objectID) { record in
+                            RecentWorkoutTile(record: record)
+                        }
+                    }
+                    .padding(.horizontal)
+                }
+                .frame(height: 140)
+                
+                // Entries
+                // TODO: Test entries
+                Text("Recent meals")
+                    .font(.title)
+                    .padding(.top, 10)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.horizontal)
+                
                 VStack(spacing: 20) {
                     MealsView(meals: Meal.exampleMeals)
                 }
@@ -192,12 +223,12 @@ struct HomePageView: View {
 
 
 // Preview
-struct HomePageView_Previews: PreviewProvider {
-    static var previews: some View {
-        //this part is for later once we get the login working
-//        HomePageView(isLoggedIn: .constant(true), user: viewModel.currentUser)
-        
-        // hardcoded for now
-        HomePageView(isLoggedIn: .constant(true), user: .exampleUser)
-    }
-}
+//struct HomePageView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        //this part is for later once we get the login working
+////        HomePageView(isLoggedIn: .constant(true), user: viewModel.currentUser)
+//        
+//        // hardcoded for now
+//        HomePageView(isLoggedIn: .constant(true), user: .exampleUser)
+//    }
+//}
